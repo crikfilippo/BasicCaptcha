@@ -90,7 +90,7 @@ class Captcha{
 		if( ! self::isFormTokenInTime($formToken)){ return false; }
 		$captcha = strtoupper($captcha);
 		$check = self::generate($formToken);
-		return $captcha == $check;
+		return self::fixChars($captcha,true) == self::fixChars($check,true);
 	}
 
 	//check if form token was issued before allowed maximum
