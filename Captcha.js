@@ -138,4 +138,9 @@ class Captcha{
 		
 	}
 
+	nuovoMetodo(){
+
+		cosnole.log(1);
+	}
+
 }
