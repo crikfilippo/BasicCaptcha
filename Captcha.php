@@ -156,6 +156,13 @@ class Captcha{
 		return $media;
 		
 	}	
+
+	public nuovoMetodo()
+	{
+	
+	}
+
+	
 }
 
 
