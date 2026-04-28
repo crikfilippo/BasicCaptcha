@@ -127,14 +127,14 @@ class Captcha{
 	//logging utility
 	error(trunks = ['hey'],fName = ''){
 		
-		this.log(trunks,fName,true);
+		this.log(trunks,fName,2);
 		
 	}
 
 	//logging utility
 	warning(trunks = ['hey'],fName = ''){
 		
-		this.log(trunks,fName,true);
+		this.log(trunks,fName,1);
 		
 	}
 
