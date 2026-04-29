@@ -31,8 +31,7 @@ class Captcha{
 
 	//constructor
 	constructor(params = {}){ 
-		
-		var fName = 'constructor';
+		const fName = 'constructor';
 		try{
 			
 			//check and default params
@@ -45,30 +44,30 @@ class Captcha{
 			this.logEnabled = params.logEnabled;
 			this.log('loading...',fName);
 			this.wrapper = document.querySelector(params.wrapperQuery);
-			if(this.wrapper == undefined){ this.error('wrapper node not found',fName); }
+			if(this.wrapper == undefined){ this.error('wrapper node not found',fName,true); }
 			this.audio.waitMs = params.audioPauseDurationMs;
 			
-		}catch(e){ this.error(e,fName); }
+		}catch(e){ this.error(e,fName,true); }
 	}
 
 	//fetch all the <audio> nodes to play
 	setAudioNodes(audioNodeQuery = 'audio'){
-		var fName = 'setAudioNodes';
+		const fName = 'setAudioNodes';
 		try{
 			
 			this.audio.nodes = document.querySelectorAll(audioNodeQuery);
-			if(this.audio.nodes.length == 0){ throw new Error('no audio nodes found'); }
+			if(this.audio.nodes.length == 0){ this.warning('no audio nodes found',fName); }
 			
-		}catch(e){ this.error(e,fName); }
+		}catch(e){ this.error(e,fName,true); }
 	}
 	
 	//set the player controls
 	setAudioPlayer(playButtonQuery = 'button'){
-		var fName = 'setAudioPlayer';
+		const fName = 'setAudioPlayer';
 		try{
 		
 			this.audio.buttons.play = document.querySelector(playButtonQuery);
-			if(this.audio.buttons.play == undefined){ throw new Error('play button not found');  }
+			if(this.audio.buttons.play == undefined){ this.error('play button not found',fName,true);  }
 
 			this.audio.buttons.play.addEventListener('click', async () => {
 				this.audio.buttons.play.setAttribute('disabled',true);
@@ -77,34 +76,31 @@ class Captcha{
 				
 			});
 			
-		}catch(e){ this.error(e,fName); }
+		}catch(e){ this.error(e,fName,true); }
 	}
 
 	//play all the audio files
 	async playAudio(){
-		var fName = 'playAudio';
+		const fName = 'playAudio';
 		try{
-			
 			for(const audioNode of this.audio.nodes){
 				audioNode.play(); 
 				await this.waitForAudioToEnd(audioNode); 
 				await this.wait(this.audio.waitMs); 
 			}
-			
-		}catch(e){ this.error(e,fName); }
+		}catch(e){ this.error(e,fName,true); }
 	}
 
 	//wait for the audio to end
 	async waitForAudioToEnd(audioNode = undefined) {
-		var fName = 'waitForAudioToEnd';
+		const fName = 'waitForAudioToEnd';
 		try{
-			
-			if(audioNode == undefined){ throw new Error('audio node not found');  }
+			if(audioNode == undefined){ this.error('audio node not found',fName,true);  }
 			return new Promise((resolve) => {
 				audioNode.addEventListener('ended', resolve, { once: true });
 			});
 		
-		}catch(e){ this.error(e,fName); }
+		}catch(e){ this.error(e,fName,true); }
 	}
 
 	//wait utility
@@ -114,16 +110,23 @@ class Captcha{
 	}
 
 	//logging utility
-	log(trunks = ['hey'],fName = '',level = 0,throwError = true){
-		if( ! this.logEnabled){ return; }
+	log(trunks = ['hey'],fName = '',level = 0,throwError = false){
+		if( ! this.logEnabled && ! throwError ){ return; }
 		trunks = Array.isArray(trunks) ? trunks : [trunks];
-		if(level == 2){ console.error('[ERROR] '+this.instanceName+' '+fName+' : ',...trunks); if(throwError){ throw new Error(); } }
-		else if(level == 1){ console.warn('[WARNING] '+this.instanceName+' '+fName+' : ',...trunks); }
-		else if(level == 0){ console.log('[LOG] '+this.instanceName+' '+fName+' : ',...trunks); 
+		for(var [t,trunk] of trunks.entries()){ trunks[t] = ( ['number','string'].indexOf(typeof(trunk)) > -1 ? trunk : JSON.stringify(trunk) ); } 
+		if(level == 1){ console.warn('[WARNING] '+this.instanceName+' '+fName+' : ',...trunks); }
+		else if(level == 2){
+			let head = '[ERROR] '+this.instanceName+' '+fName+' : ';  
+			for(var [t,trunk] of trunks.entries()){ 
+				if(throwError && t == (trunks.length - 1)){ throw( head + ( trunk ) ); }  
+				console.error(head,trunk); 
+			}
+		}
+		else{ console.log('[LOG] '+this.instanceName+' '+fName+' : ',...trunks); }
 	}
 
 	//logging utility
-	error(trunks = ['hey'],fName = '',throwError = true){
+	error(trunks = ['hey'],fName = '',throwError = false){
 		this.log(trunks,fName,2,throwError);
 	}
 
