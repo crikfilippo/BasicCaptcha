@@ -118,7 +118,11 @@ class BasicCaptcha{
 		if(level == 1){ console.warn('[WARNING] '+fName,...trunks); }
 		else if(level == 2){
 			for(var [t,trunk] of trunks.entries()){ 
-				if(throwError && t == (trunks.length - 1)){ throw( '[ERROR] '+fName+trunk ); }  
+				if(throwError && t == (trunks.length - 1)){ 
+					var e = new Error(( (e.isCustom ?? false) ? '' : ('[ERROR] '+fName))+trunk); //no readding headers
+					e.isCustom = true; 
+					throw(e); 
+				}  
 				else{ console.error('[ERROR] '+fName,trunk); } 
 			}
 		}
