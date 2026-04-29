@@ -113,13 +113,13 @@ class BasicCaptcha{
 			try{ errMsg = trunk.message; }catch(p){ errMsg = null; }
 			try{ errStack = trunk.stack; }catch(p){ errStack = null; }
 			try{ wasCustom = trunk.isCustom; }catch(p){ wasCustom = false; }
-			trunks[t] = ( ['number','string'].indexOf(typeof(trunk)) > -1 ? trunk : JSON.stringify(trunk) ); 
+			trunks[t] = ( ['number','string'].indexOf(typeof(trunk)) > -1 ? trunk : (errMsg == null ? JSON.stringify(trunk) : errMsg) ); 
 		}
 		if(level == 1){ console.warn('[WARNING] '+fName,...trunks); }
 		else if(level == 2){
 			for(var [t,trunk] of trunks.entries()){
 				if(throwError && t == (trunks.length - 1)){					
-					var e = new Error( wasCustom ? errMsg : ('[ERROR] '+fName+ (errMsg == null ? trunk : errMsg) ) ); //no readding headers
+					var e = new Error( wasCustom ? errMsg : ('[ERROR] '+fName+trunk ) ); //no readding headers
 					e.isCustom = true; 
 					e.stack = errStack;
 					throw(e); 
