@@ -114,12 +114,12 @@ class BasicCaptcha{
 		if( ! this.logEnabled && ! throwError ){ return; }
 		trunks = Array.isArray(trunks) ? trunks : [trunks];
 		fName = this.instanceName+' '+fName+' : ';
-		for(var [t,trunk] of trunks.entries()){ trunks[t] = ( ['number','string'].indexOf(typeof(trunk)) > -1 ? trunk : JSON.stringify(trunk) ); } 
+		for(var [t,trunk] of trunks.entries()){ trunks[t] = ( ['number','string'].indexOf(typeof(trunk)) > -1 ? trunk : JSON.stringify(trunk) ); } //strigify content
 		if(level == 1){ console.warn('[WARNING] '+fName,...trunks); }
 		else if(level == 2){
 			for(var [t,trunk] of trunks.entries()){ 
 				if(throwError && t == (trunks.length - 1)){ 
-					var e = new Error(( (e.isCustom ?? false) ? '' : ('[ERROR] '+fName))+trunk); //no readding headers
+					var e = new Error(( (e.isCustom ?? false) ? '' : ('[ERROR] '+fName) )+trunk); //no readding headers
 					e.isCustom = true; 
 					throw(e); 
 				}  
