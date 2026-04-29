@@ -33,19 +33,13 @@ class BasicCaptcha{
 	constructor(params = {}){ 
 		const fName = 'constructor';
 		try{
-			
 			//check and default params
-			params.instanceName = params.instanceName ?? 'Basic Captcha';
-			params.wrapperQuery = params.wrapperQuery ?? '#captcha-wrapper';
-			params.logEnabled = params.logEnabled ?? true;
-			params.audioPauseDurationMs = params.audioPauseDurationMs ?? 800;
-			
-			this.instanceName = params.instanceName;
-			this.logEnabled = params.logEnabled;
+			this.instanceName = params.instanceName ?? 'Basic Captcha';
+			this.logEnabled = params.logEnabled ?? true;
 			this.log('loading...',fName);
-			this.wrapper = document.querySelector(params.wrapperQuery);
-			if(this.wrapper == undefined){ this.error('wrapper node not found',fName,true); }
-			this.audio.waitMs = params.audioPauseDurationMs;
+			this.wrapper = document.querySelector(params.wrapperQuery ?? '#captcha-wrapper');
+			if(this.wrapper == undefined){ this.error('wrapper node not found ('+(params.wrapperQuery ?? '#captcha-wrapper')+')',fName,true); }
+			this.audio.waitMs = params.audioPauseDurationMs ?? 800;
 			
 		}catch(e){ this.error(e,fName,true); }
 	}
