@@ -27,8 +27,10 @@ captcha.setAudioPlayer('#captcha_audio_button');
 
 
 # demo
-You can try a simple form implementation including demo.php in your project.
-Please remove the file when no more needed.
+You can try a simple form implementation here: 
+https://crikfilippo.github.io/BasicCaptcha/demo
+
+
 
 # screenshots
 <img width="276" height="212" alt="image" src="https://github.com/user-attachments/assets/1058044a-9544-4a69-9c04-f2b1824327c5" />
