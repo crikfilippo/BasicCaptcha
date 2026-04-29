@@ -21,7 +21,7 @@ You can obtain an array of base64 audios by using ```Captcha::getB64($captchaVal
 <br>then include the Captcha.js class, and use it as follows : 
 <br>
 ``` 
-let captcha = new Captcha({'wrapperQuery':'#captcha-wrapper' ,'logEnabled':true ,'audioPauseDurationMs':800});
+let captcha = new BasicCaptcha({'wrapperQuery':'#captcha-wrapper' ,'logEnabled':true ,'audioPauseDurationMs':800});
 captcha.setAudioNodes('.captcha_audio');
 captcha.setAudioPlayer('#captcha_audio_button');
 ```
