@@ -1,4 +1,4 @@
-class Captcha{
+class BasicCaptcha{
 	
 	//-----------------
 	//--BASIC CAPTCHA--
