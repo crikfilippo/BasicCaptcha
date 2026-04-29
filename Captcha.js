@@ -119,10 +119,12 @@ class BasicCaptcha{
 		else if(level == 2){
 			for(var [t,trunk] of trunks.entries()){
 				if(throwError && t == (trunks.length - 1)){
-					var wasCustom = false; //check if was custom thrown
-					try{ wasCustom = JSON.parse(trunk); wasCustom = (trunk.isCustom ?? false); }catch(p){ wasCustom = false; }
-					var e = new Error(( wasCustom ? '' : ('[ERROR] '+fName) )+trunk); //no readding headers
+					 //check if was custom thrown
+					try{ var previousCustom = {isCustom : ((JSON.parse(trunk)).isCustom ?? false), customMsg : ((JSON.parse(trunk)).customMsg ?? '')};}
+					catch(p){ var previousCustom = {isCustom : false}; }
+					var e = new Error( previousCustom.isCustom ? previousCustom.customMsg : ('[ERROR] '+fName+trunk) ); //no readding headers
 					e.isCustom = true; 
+					e.customMsg = previousCustom.isCustom ? previousCustom.customMsg : trunk;
 					throw(e); 
 				}  
 				else{ console.error('[ERROR] '+fName,trunk); }
