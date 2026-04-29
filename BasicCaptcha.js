@@ -108,17 +108,20 @@ class BasicCaptcha{
 		if( ! this.logEnabled && ! throwError ){ return; }
 		trunks = Array.isArray(trunks) ? trunks : [trunks];
 		fName = this.instanceName+' '+fName+' : ';
-		for(var [t,trunk] of trunks.entries()){ trunks[t] = ( ['number','string'].indexOf(typeof(trunk)) > -1 ? trunk : JSON.stringify(trunk) ); } //strigify objects
+		for(var [t,trunk] of trunks.entries()){ //strigify objects
+			var errMsg,errStack,wasCustom;
+			try{ errMsg = trunk.message; }catch(p){ errMsg = null; }
+			try{ errStack = trunk.stack; }catch(p){ errStack = null; }
+			try{ wasCustom = trunk.isCustom; }catch(p){ wasCustom = false; }
+			trunks[t] = ( ['number','string'].indexOf(typeof(trunk)) > -1 ? trunk : JSON.stringify(trunk) ); 
+		}
 		if(level == 1){ console.warn('[WARNING] '+fName,...trunks); }
 		else if(level == 2){
 			for(var [t,trunk] of trunks.entries()){
-				if(throwError && t == (trunks.length - 1)){
-					 //check if was custom thrown
-					try{ var previousCustom = {isCustom : ((JSON.parse(trunk)).isCustom ?? false), customMsg : ((JSON.parse(trunk)).customMsg ?? '')};}
-					catch(p){ var previousCustom = {isCustom : false}; }
-					var e = new Error( previousCustom.isCustom ? previousCustom.customMsg : ('[ERROR] '+fName+trunk) ); //no readding headers
+				if(throwError && t == (trunks.length - 1)){					
+					var e = new Error( wasCustom ? errMsg : ('[ERROR] '+fName+ (errMsg == null ? trunk : errMsg) ) ); //no readding headers
 					e.isCustom = true; 
-					e.customMsg = previousCustom.isCustom ? previousCustom.customMsg : trunk;
+					e.stack = errStack;
 					throw(e); 
 				}  
 				else{ console.error('[ERROR] '+fName,trunk); }
