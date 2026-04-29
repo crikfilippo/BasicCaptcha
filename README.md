@@ -4,7 +4,7 @@ A simple php class to generate and check captcha values.
 <br>- The check is not case sensitive.
 <br>- A token can be used within 1 hour (customizable static property).
 
-# usage
+# Usage
 1. include the class in your project and assign a new own value to the static class property $key.
 2. use ``` $formToken = BasicCaptcha::generateFormToken(); ```  to obtain a new token to be sent alongside the captcha value inserted by the form user.
 3. use ``` $captchaValue = BasicCaptcha::generate($formToken); ```, passing the previously obtained form token, to obtain a new captcha value.
@@ -13,7 +13,7 @@ A simple php class to generate and check captcha values.
 6. in the same form, add a ``` <input type="text" maxlength="8" name="captcha" placeholder="Input the captcha code" required /> ``` input, needed to let the user input the captcha code.
 7. in the form processing page, use ``` $isCaptchaValid = BasicCaptcha::verify($captcha,$formToken); ``` making sure both the arguments are obtained from the post submission, to check if the captcha input is valid.
 
-# audio player
+# Audio player
 You can obtain an array of base64 audios by using ```BasicCaptcha::getB64($captchaValue,'audio','en');```
 <br>on your page, add all the obtained audios using <b>hidden</b> audio elements: ``` <audio style="display:none;" class="captcha_audio" src="data:audio/mpeg;base64,<?php echo $a; ?>"></audio> ```
 <br>and a button to play them all: ``` <button type="button" id="captcha_audio_button"> Play captcha audio </button> ```
@@ -26,9 +26,9 @@ captcha.setAudioPlayer('#captcha_audio_button');
 ```
 
 
-# demo
-You can try a simple form implementation here: 
-https://crikfilippo.github.io/BasicCaptcha/demo
+# Demo
+You can try a simple form implementation including demo.php, BasicCaptcha.php and BasicCaptcha.js in your project.
+Don't forget to remove the file when no more needed.
 
 
 
