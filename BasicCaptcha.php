@@ -126,7 +126,7 @@ class BasicCaptcha{
 	public static function getB64(string $captcha, string $returnedMedia = 'image', string $languageCode = 'en') : string|array
 	{
 		$media = null;
-		$captcha = Captcha::fixChars($captcha);
+		$captcha = BasicCaptcha::fixChars($captcha);
 		
 		if($returnedMedia == 'image'){
 			
@@ -148,7 +148,7 @@ class BasicCaptcha{
 			$media = [];
 			for($c = 0; $c < (strlen($captcha)); $c++){
 				
-				$media[] = Captcha::$b64AudioChars[$languageCode][$captcha[$c]] ?? '';
+				$media[] = BasicCaptcha::$b64AudioChars[$languageCode][$captcha[$c]] ?? '';
 				
 			}
 		}
