@@ -113,16 +113,16 @@ class BasicCaptcha{
 	log(trunks = ['hey'],fName = '',level = 0,throwError = false){
 		if( ! this.logEnabled && ! throwError ){ return; }
 		trunks = Array.isArray(trunks) ? trunks : [trunks];
+		fName = this.instanceName+' '+fName+' : ';
 		for(var [t,trunk] of trunks.entries()){ trunks[t] = ( ['number','string'].indexOf(typeof(trunk)) > -1 ? trunk : JSON.stringify(trunk) ); } 
-		if(level == 1){ console.warn('[WARNING] '+this.instanceName+' '+fName+' : ',...trunks); }
+		if(level == 1){ console.warn('[WARNING] '+fName,...trunks); }
 		else if(level == 2){
-			let head = '[ERROR] '+this.instanceName+' '+fName+' : ';  
 			for(var [t,trunk] of trunks.entries()){ 
-				if(throwError && t == (trunks.length - 1)){ throw( head + ( trunk ) ); }  
-				console.error(head,trunk); 
+				if(throwError && t == (trunks.length - 1)){ throw( '[ERROR] '+fName+trunk ); }  
+				else{ console.error('[ERROR] '+fName,trunk); } 
 			}
 		}
-		else{ console.log('[LOG] '+this.instanceName+' '+fName+' : ',...trunks); }
+		else{ console.log('[LOG] '+fName,...trunks); }
 	}
 
 	//logging utility
