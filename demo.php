@@ -4,8 +4,8 @@
 //SIMPLE SHOWCASE
 //---------------
 
-require_once('Captcha.php');
-use BasicCaptcha\Captcha;
+require_once('BasicCaptcha.php');
+use BasicCaptcha\BasicCaptcha;
 
 $getCaptcha = $_GET['captcha'] ?? '';
 $getToken	= $_GET['token'] ?? '';
@@ -15,7 +15,7 @@ $isFormSubmitted = strlen($getCaptcha) > 0;
 <html>
 	<head>
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>Basic Captha test</title>
+		<title>Basic Captha Demo</title>
 	</head>
 	
 	<body>
@@ -24,10 +24,10 @@ $isFormSubmitted = strlen($getCaptcha) > 0;
 
 		if( ! $isFormSubmitted){ 
 
-      //generate required data
-			$token = Captcha::generateFormToken();
-			$captcha = Captcha::generate($token);
-			$base64 = Captcha::getB64($captcha);
+      		//generate required data
+			$token = BasicCaptcha::generateFormToken();
+			$captcha = BasicCaptcha::generate($token);
+			$base64 = BasicCaptcha::getB64($captcha);
 			
 			
 			?>
@@ -43,8 +43,8 @@ $isFormSubmitted = strlen($getCaptcha) > 0;
 		
 		else{
 
-      //check if captcha is valid
-			$isCaptchaValid = $isFormSubmitted && Captcha::verify($getCaptcha,$getToken);
+      		//check if captcha is valid
+			$isCaptchaValid = $isFormSubmitted && BasicCaptcha::verify($getCaptcha,$getToken);
 			
 			?>
 			
