@@ -45,7 +45,7 @@ class Captcha{
 			this.logEnabled = params.logEnabled;
 			this.log('loading...',fName);
 			this.wrapper = document.querySelector(params.wrapperQuery);
-			if(this.wrapper == undefined){ this.warning('wrapper node not found',fName); }
+			if(this.wrapper == undefined){ this.error('wrapper node not found',fName); }
 			this.audio.waitMs = params.audioPauseDurationMs;
 			
 		}catch(e){ this.error(e,fName); }
@@ -114,28 +114,22 @@ class Captcha{
 	}
 
 	//logging utility
-	log(trunks = ['hey'],fName = '',level = 0){
-		
+	log(trunks = ['hey'],fName = '',level = 0,throwError = true){
 		if( ! this.logEnabled){ return; }
 		trunks = Array.isArray(trunks) ? trunks : [trunks];
-		if(level == 2){ console.error('[ERROR] '+this.instanceName+' '+fName+' : ',...trunks); }
-		else if(level == 1){ console.log('[WARNING] '+this.instanceName+' '+fName+' : ',...trunks); }
-		else if(level == 0){ console.log('[LOG] '+this.instanceName+' '+fName+' : ',...trunks); }
-		
+		if(level == 2){ console.error('[ERROR] '+this.instanceName+' '+fName+' : ',...trunks); if(throwError){ throw new Error(); } }
+		else if(level == 1){ console.warn('[WARNING] '+this.instanceName+' '+fName+' : ',...trunks); }
+		else if(level == 0){ console.log('[LOG] '+this.instanceName+' '+fName+' : ',...trunks); 
 	}
 
 	//logging utility
-	error(trunks = ['hey'],fName = ''){
-		
-		this.log(trunks,fName,2);
-		
+	error(trunks = ['hey'],fName = '',throwError = true){
+		this.log(trunks,fName,2,throwError);
 	}
 
 	//logging utility
 	warning(trunks = ['hey'],fName = ''){
-		
 		this.log(trunks,fName,1);
-		
 	}
 
 }
