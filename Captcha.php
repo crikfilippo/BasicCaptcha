@@ -15,7 +15,7 @@ namespace BasicCaptcha;
  *
  */
 
-class Captcha{
+class BasicCaptcha{
 	
 	private static string $key = 'lisnLJNBUI678624'; //salt key, please use your own
 	private static string $ive = 'fecb016b666c47c2'; //initialization vector, 16 characters
