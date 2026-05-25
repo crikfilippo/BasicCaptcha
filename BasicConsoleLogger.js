@@ -19,11 +19,11 @@ class BasicConsoleLogger{
 	//let basicConsoleLogger = new BasicConsoleLogger({'instanceName':'BasicConsoleLogger' ,'logEnabled':true});
 	//
 	//basicConsoleLogger.log('this is a simple use case - standard log');
-	//basicConsoleLogger.warning('this is a simple use case - warning log');
+	//basicConsoleLogger.warn('this is a simple use case - warning log');
 	//basicConsoleLogger.error('this is a simple use case - error log');
 	//  
 	//basicConsoleLogger.log(['this is an advanced use case - standard log','trunk 1','trunk 2'],'callerFunctionName',0);
-	//basicConsoleLogger.log(['this is an advanced use case - warning log','trunk 1','trunk 2'],'callerFunctionName',1);
+	//basicConsoleLogger.log(['this is an advanced use case - warn log','trunk 1','trunk 2'],'callerFunctionName',1);
 	//basicConsoleLogger.log(['this is an advanced use case - error log','trunk 1','trunk 2'],'callerFunctionName',2);
 	//
 	//try{ basicConsoleLogger.log(['this is an advanced use case - error log re-throwing the error','trunk 1','trunk 2'],'callerFunctionName',2,true); }catch(e){ console.log(e); }
@@ -109,7 +109,7 @@ class BasicConsoleLogger{
 	}
 
 	//log a warning
-	warning(trunks = ['hey'],fName = ''){
+	warn(trunks = ['hey'],fName = ''){
 		
 		this.log(trunks,fName,1);
 	
