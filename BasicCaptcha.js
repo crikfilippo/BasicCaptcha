@@ -6,7 +6,7 @@ class BasicCaptcha{
 	//
 	//@author Filippo Maria Grilli
 	//@github crikfilippo
-	//@version 1.0.0
+	//@version 1.0.1
 	//@since 2026-01-15
 	//@license MIT
 	//@link https://github.com/crikfilippo/basic_captcha
@@ -15,14 +15,14 @@ class BasicCaptcha{
 	//---USE EXAMPLE---
 	//-----------------
 	//
-	//let captcha = new Captcha({'wrapperQuery':'#captcha-wrapper' ,'logEnabled':true ,'audioPauseDurationMs':800});
+	//let captcha = new Captcha({'wrapperQuery':'#captcha-wrapper' ,'isLogEnabled':true ,'audioPauseDurationMs':800});
 	//captcha.setAudioNodes('.captcha_audio');
 	//captcha.setAudioPlayer('#captcha_audio_button');
 	//  
 
 	instanceName = undefined;
 	wrapper = undefined;
-	logEnabled = undefined;
+	isLogEnabled = undefined;
 	audio = {
 		nodes : []
 		,buttons : { play : undefined }
@@ -37,13 +37,14 @@ class BasicCaptcha{
 			
 			//check and default params
 			this.instanceName = params.instanceName ?? 'Basic Captcha';
-			this.logEnabled = params.logEnabled ?? true;
+			this.isLogEnabled = params.isLogEnabled ?? true;
+            try{ this.logger = new BasicConsoleLogger({instanceName : this.instanceName, isLogEnabled : this.isLogEnabled}); }
+			catch(e){ this.logger = undefined; }
 			this.log('loading...',fName);
 			this.wrapper = document.querySelector(params.wrapperQuery ?? '#captcha-wrapper');
 			if(this.wrapper == undefined){ this.error('wrapper node not found ('+(params.wrapperQuery ?? '#captcha-wrapper')+')',fName,true); }
 			this.audio.waitMs = params.audioPauseDurationMs ?? 800;
-			try{ this.logger = new BasicConsoleLogger({instanceName : this.instanceName, logEnabled : this.logEnabled}); }
-			catch(e){ this.logger = undefined; }
+			
 			
 		}catch(e){ this.error(e,fName,true); }
 	}
@@ -69,8 +70,9 @@ class BasicCaptcha{
 
 			this.audio.buttons.play.addEventListener('click', async () => {
 				this.audio.buttons.play.setAttribute('disabled',true);
-				this.playAudio();
-				this.audio.buttons.play.removeAttribute('disabled',true);
+				this.playAudio().then(() => {
+				    this.audio.buttons.play.removeAttribute('disabled');
+                });
 				
 			});
 			
@@ -103,7 +105,7 @@ class BasicCaptcha{
 
 	//wait utility
 	async wait(ms = undefined) {
-		ms = ms == undefined ? this.waitMs : ms;
+		ms = ms == undefined ? this.audio.waitMs : ms;
 		return new Promise((resolve) => setTimeout(resolve, ms));
 	}
 
