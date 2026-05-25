@@ -16,7 +16,7 @@ class BasicConsoleLogger{
 	//---USE EXAMPLE---
 	//-----------------
 	//
-	//let basicConsoleLogger = new BasicConsoleLogger({'instanceName':'BasicConsoleLogger' ,'logEnabled':true});
+	//let basicConsoleLogger = new BasicConsoleLogger({'instanceName':'BasicConsoleLogger' ,'isLogEnabled':true});
 	//
 	//basicConsoleLogger.log('this is a simple use case - standard log');
 	//basicConsoleLogger.warn('this is a simple use case - warning log');
