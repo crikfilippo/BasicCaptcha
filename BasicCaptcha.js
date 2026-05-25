@@ -23,16 +23,18 @@ class BasicCaptcha{
 	instanceName = undefined;
 	wrapper = undefined;
 	logEnabled = undefined;
-	audio = {	
+	audio = {
 		nodes : []
 		,buttons : { play : undefined }
 		,waitMs : undefined
 	};
+	logger = undefined;
 
 	//constructor
 	constructor(params = {}){ 
 		const fName = 'constructor';
 		try{
+			
 			//check and default params
 			this.instanceName = params.instanceName ?? 'Basic Captcha';
 			this.logEnabled = params.logEnabled ?? true;
@@ -40,6 +42,8 @@ class BasicCaptcha{
 			this.wrapper = document.querySelector(params.wrapperQuery ?? '#captcha-wrapper');
 			if(this.wrapper == undefined){ this.error('wrapper node not found ('+(params.wrapperQuery ?? '#captcha-wrapper')+')',fName,true); }
 			this.audio.waitMs = params.audioPauseDurationMs ?? 800;
+			try{ this.logger = new BasicConsoleLogger({instanceName : this.instanceName, logEnabled : this.logEnabled}); }
+			catch(e){ this.logger = undefined; }
 			
 		}catch(e){ this.error(e,fName,true); }
 	}
@@ -50,7 +54,7 @@ class BasicCaptcha{
 		try{
 			
 			this.audio.nodes = document.querySelectorAll(audioNodeQuery);
-			if(this.audio.nodes.length == 0){ this.warning('no audio nodes found',fName); }
+			if(this.audio.nodes.length == 0){ this.warn('no audio nodes found',fName); }
 			
 		}catch(e){ this.error(e,fName,true); }
 	}
@@ -104,40 +108,8 @@ class BasicCaptcha{
 	}
 
 	//logging utility
-	log(trunks = ['hey'],fName = '',level = 0,throwError = false){
-		if( ! this.logEnabled && ! throwError ){ return; }
-		trunks = Array.isArray(trunks) ? trunks : [trunks];
-		fName = this.instanceName+' '+fName+' : ';
-		for(var [t,trunk] of trunks.entries()){ //strigify objects
-			var errMsg,errStack,wasCustom;
-			try{ errMsg = trunk.message; }catch(p){ errMsg = null; }
-			try{ errStack = trunk.stack; }catch(p){ errStack = null; }
-			try{ wasCustom = trunk.isCustom; }catch(p){ wasCustom = false; }
-			trunks[t] = ( ['number','string'].indexOf(typeof(trunk)) > -1 ? trunk : (errMsg == null ? JSON.stringify(trunk) : errMsg) ); 
-		}
-		if(level == 1){ console.warn('[WARNING] '+fName,...trunks); }
-		else if(level == 2){
-			for(var [t,trunk] of trunks.entries()){
-				if(throwError && t == (trunks.length - 1)){					
-					var e = new Error( wasCustom ? errMsg : ('[ERROR] '+fName+trunk ) ); //no readding headers
-					e.isCustom = true; 
-					e.stack = errStack;
-					throw(e); 
-				}  
-				else{ console.error('[ERROR] '+fName,trunk); }
-			}
-		}
-		else{ console.log('[LOG] '+fName,...trunks); }
-	}
-
-	//logging utility
-	error(trunks = ['hey'],fName = '',throwError = false){
-		this.log(trunks,fName,2,throwError);
-	}
-
-	//logging utility
-	warning(trunks = ['hey'],fName = ''){
-		this.log(trunks,fName,1);
-	}
+	log(a,b,c,d){ if(this.logger == undefined){ console.log(a,b,c,d); }else{ this.logger.log(a,b,c,d); } }
+	error(a,b,c){ if(this.logger == undefined){ console.error(a,b,c); }else{ this.logger.error(a,b,c); } }
+	warn(a,b){ if(this.logger == undefined){ console.warn(a,b); }else{ this.logger.warn(a,b); } }
 
 }
